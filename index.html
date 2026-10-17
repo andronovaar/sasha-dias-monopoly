@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sasha & Dias Monopoly</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div>
+    <div class="eyebrow">PERSONAL EDITION</div>
+    <h1>Sasha <span>&</span> Dias</h1>
+    <p class="subtitle">наша маленькая империя · путешествия и воспоминания</p>
+  </div>
+  <div class="header-actions">
+    <button id="soundToggle" class="secondary" type="button" aria-pressed="true">🔊 Звук: вкл.</button>
+    <label class="sound-volume" for="soundVolume">Громкость <input id="soundVolume" type="range" min="0" max="100" value="55"></label>
+    <span id="connectionBadge" class="badge offline">Локальная игра</span>
+    <button id="newGameBtn" class="secondary">Новая игра</button>
+  </div>
+</header>
+
+<main class="app">
+  <section class="board-wrap">
+    <div class="board" id="board">
+      <div class="center">
+        <img class="center-photo" src="photos/monopoly-center.jpg" alt="Саша и Диас" />
+        <div class="center-overlay"></div>
+        <div class="center-mark">S <span>♥</span> D</div>
+        <h2>МОНОПОЛИЯ</h2>
+        <p>SASHA &amp; DIAS EDITION</p>
+        <div class="center-rule"></div>
+        <div class="center-note">Кто сегодня покупает<br>всё самое необходимое?</div>
+      </div>
+      <div id="cells"></div>
+    </div>
+    <div class="mobile-hint">На телефоне прокручивай поле по горизонтали или уменьши масштаб страницы.</div>
+  </section>
+
+  <aside class="sidebar">
+    <section class="panel turn-panel">
+      <div class="panel-head"><span>СЕЙЧАС ХОДИТ</span><span id="roundLabel">Раунд 1</span></div>
+      <div class="current-player">
+        <div id="activeToken" class="token big">S</div>
+        <div><h2 id="activeName">Саша</h2><p id="activeStatus">Твой ход — бросай кубики</p></div>
+      </div>
+      <div class="dice-row">
+        <div id="die1" class="die">—</div><div id="die2" class="die">—</div>
+        <div class="dice-total"><small>ИТОГО</small><strong id="diceTotal">—</strong></div>
+      </div>
+      <button id="rollBtn" class="primary">Бросить кубики</button>
+      <div id="actionHint" class="hint">Брось кубики, чтобы начать ход.</div>
+      <div class="action-buttons">
+        <button id="endTurnBtn" class="secondary" disabled>Завершить ход</button>
+        <button id="buyBtn" class="primary" disabled>Купить</button>
+        <button id="declineBtn" class="secondary" disabled>Отказаться</button>
+      </div>
+    </section>
+
+    <section class="panel money-panel">
+      <div class="panel-head"><span>ВАШИ ФИНАНСЫ</span><span class="muted">игровые Ft</span></div>
+      <div class="player-money">
+        <div class="money-player"><span class="token s-token">S</span><div><b>Саша</b><strong id="sashaMoney">1 500</strong><small id="sashaWorth">Состояние: 1 500</small></div></div>
+        <div class="money-player"><span class="token d-token">D</span><div><b>Диас</b><strong id="diasMoney">1 500</strong><small id="diasWorth">Состояние: 1 500</small></div></div>
+      </div>
+    </section>
+
+    <section class="panel properties-panel">
+      <div class="panel-head"><span>НЕДВИЖИМОСТЬ</span><span id="propertyCount" class="muted">0 участков</span></div>
+      <div id="propertiesList" class="properties-list"><p class="empty">Пока никто не купил ни одной улицы.</p></div>
+    </section>
+
+    <section class="panel management-panel">
+      <div class="panel-head"><span>УПРАВЛЕНИЕ ИМУЩЕСТВОМ</span><span class="muted">твой ход</span></div>
+      <label>Твоя улица <select id="manageProperty"></select></label>
+      <div class="action-buttons">
+        <button id="buildBtn" class="secondary">Построить дом</button>
+        <button id="hotelBtn" class="secondary">Построить отель</button>
+      </div>
+      <div class="action-buttons">
+        <button id="mortgageBtn" class="secondary">Заложить</button>
+        <button id="redeemBtn" class="secondary">Выкупить</button>
+      </div>
+      <div class="action-buttons">
+        <button id="sellBuildingBtn" class="secondary">Продать здание</button>
+        <button id="sellPropertyBtn" class="secondary">Продать улицу</button>
+      </div>
+      <button id="tradeBtn" class="secondary" style="width:100%;margin-top:8px">Предложить обмен</button>
+      <p class="tiny">Строительство доступно после сбора всей цветовой группы. Пока доступно управление только своей недвижимостью.</p>
+    </section>
+
+    <section class="panel log-panel">
+      <div class="panel-head"><span>ИСТОРИЯ ПАРТИИ</span><button id="clearLogBtn" class="text-btn">Очистить</button></div>
+      <div id="log" class="log"></div>
+    </section>
+
+    <section class="panel setup-panel">
+      <div class="panel-head"><span>ОНЛАЙН-КОМНАТА</span><span class="muted">экспериментально</span></div>
+      <label>Код комнаты <input id="roomCode" maxlength="16" placeholder="Например, SASHA-DIAS"></label>
+      <label>Моя роль
+        <select id="onlineRole">
+          <option value="host">Создать комнату · Саша</option>
+          <option value="guest">Войти в комнату · Диас</option>
+        </select>
+      </label>
+      <label>Supabase URL <input id="supabaseUrl" placeholder="https://your-project.supabase.co"></label>
+      <label>Supabase public anon key <input id="supabaseKey" placeholder="Публичный anon/publishable key"></label>
+      <button id="connectBtn" class="secondary">Подключить онлайн</button>
+      <button id="inviteBtn" class="secondary" disabled style="width:100%;margin-top:8px">Скопировать ссылку для Диаса</button>
+      <p id="onlineHelp" class="tiny">Сначала Саша создаёт комнату, затем Диас выбирает «Войти» с тем же кодом. Оба устройства должны использовать URL и публичный ключ одного проекта Supabase.</p>
+      <p class="tiny">Не вставляй сюда service_role key. Используется публичный ключ Supabase; онлайн-состояние — для дружеской игры, не защищённое от вмешательства.</p>
+    </section>
+  </aside>
+</main>
+<footer>Сделано для Саши и Диаса · Онлайн-прототип · Игровые суммы условные</footer>
+<div id="modal" class="modal hidden" role="dialog" aria-modal="true">
+  <div class="modal-card">
+    <button id="closeModal" class="close">×</button>
+    <div class="eyebrow">ВАШ СЛЕДУЮЩИЙ ШАГ</div>
+    <h2 id="modalTitle">Карточка</h2>
+    <p id="modalText"></p>
+    <div id="modalButtons" class="modal-buttons"></div>
+  </div>
+</div>
+<script src="app.js"></script>
+</body>
+</html>
